@@ -62,4 +62,33 @@ class CutCore():
         print(MediaCore.color.GREEN+'Output File: '+self.outputFileName+MediaCore.color.ENDC)
 
 class RecordingCore():
-    pass
+    def __init__(self,url):
+        self.url = MediaCore.Renamer(url).bashName
+    def record(self):
+        import random, datetime
+        self.date = str(datetime.datetime.utcnow().strftime("%a-%b-%d--%H-%M-%S--%Y-"+str(random.randint(50001,60001))))
+        self.quality = input('\n :: Enter Quality ([best], worst): ')
+        if self.quality == '':
+            print(MediaCore.color.BLUE+" :: No Quality Given, using default [best] !"+MediaCore.color.ENDC)
+            self.quality = 'best'
+        self.seek = input('\n :: Start Seek at (00:00:00) : ')
+        if self.seek == '':
+            print(MediaCore.color.BLUE+" :: No Seek Given, Recording Will Start at 0"+MediaCore.color.ENDC)
+            self.seek == ''
+        else:
+            self.seek = ' --start=\''+self.seek+'\''
+        self.recFormat = input('\n :: Recording Extension (mkv): ')
+        if self.recFormat == '':
+            print(MediaCore.color.BLUE+" :: No Recording Format Given, Using Matroska as Default !"+MediaCore.color.ENDC)
+            self.recFormat = 'mkv'
+        self.filename = MediaCore.Renamer(self.date+'.'+self.recFormat).rename()
+        print('\n{} :: Filename {}= {}{}{}'.format(MediaCore.color.HEADER,MediaCore.color.ENDC,MediaCore.color.GREEN,self.filename,MediaCore.color.ENDC))
+        self.cmd = 'mpv --ytdl-format='+self.quality+' \''+self.url+'\''
+        self.cmd += ' --no-border --record-file=\''+self.filename+'\''
+        self.cmd += self.seek
+        self.proceed = input(MediaCore.color.HEADER+"\n :: Proceed (y/N) "+MediaCore.color.ENDC)
+        if self.proceed == 'y' or self.proceed == 'Y':
+            print()
+            MediaCore.os.system(self.cmd)
+        else:
+            MediaCore.sys.exit(MediaCore.color.GREEN+'\n :: GOOD BYE !\n'+MediaCore.color.ENDC)

@@ -3,7 +3,7 @@ import os, sys
 from master.manual import manual_msg
 from master.colours import Terminal_color as color
 from master.name_manager import Renamer
-from master.core import MediaCore, CatCore, CutCore
+from master.core import MediaCore, CatCore, CutCore, RecordingCore
 
 args = sys.argv[1:]
 
@@ -30,5 +30,10 @@ elif args[0] == '--jav' or args[0] == '--cat':
         if not os.path.exists(arg):
             sys.exit(color.WARNING+'\n:: File Doesn\'t Exist !\n'+color.ENDC)
     CatCore(nameArgs).joinAV() if args[0] == '--jav' else CatCore(nameArgs).cat()
+elif args[0] == '--rec':
+    if len(args) >= 2:
+            RecordingCore(args[1]).record()
+    else:
+        sys.exit(color.BLUE+'\n:: No URL !\n'+color.ENDC)
 else:
     sys.exit(manual_msg())
