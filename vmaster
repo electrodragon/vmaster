@@ -3,16 +3,19 @@ import os, sys
 from master.manual import manual_msg
 from master.colours import Terminal_color as color
 from master.name_manager import Renamer
-from master.core import MediaCore, CatCore
+from master.core import MediaCore, CatCore, CutCore
 
 args = sys.argv[1:]
 
 if '--help' in args or len(args) == 0:
     sys.exit(manual_msg())
-elif args[0] == '--ea' or args[0] == '--ra':
+elif args[0] == '--ea' or args[0] == '--ra' or args[0] == '--cut':
     if len(args) >= 2:
         if os.path.exists(args[1]):
-            MediaCore(args[1]).extractAudio() if '--ea' == args[0] else MediaCore(args[1]).removeAudio()
+            if args[0] == '--cut':
+                CutCore(args[1]).cutClip()
+            else:
+                MediaCore(args[1]).extractAudio() if '--ea' == args[0] else MediaCore(args[1]).removeAudio()
         else:
             sys.exit(color.WARNING+'\n:: File Doesn\'t Exist !\n'+color.ENDC)
     else:

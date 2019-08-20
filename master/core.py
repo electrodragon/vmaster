@@ -44,7 +44,22 @@ class CatCore():
         else: MediaCore.sys.exit(MediaCore.color.FAIL+'Failed !'+MediaCore.color.ENDC)
 
 class CutCore():
-    pass
+    def __init__(self,name):
+        self.name = name
+    def cutClip(self):
+        self.startingPoint = input('Starting Point (00:00:00) :')
+        self.endingPoint = input('Ending Point (00:00:00) :')
+        self.cmd = 'ffmpeg -i \'{}\''.format(MediaCore.Renamer(self.name).bashName)
+        if self.startingPoint != '': self.cmd += ' -ss '+self.startingPoint
+        if self.endingPoint != '': self.cmd += ' -to '+self.endingPoint
+        self.outputFileName = MediaCore.Renamer('cut.'+MediaCore.Renamer(self.name).extension).rename()
+        self.cmd += ' -c copy \'{}\''.format(self.outputFileName)
+        MediaCore.os.system(self.cmd)
+        self.replaceOrignal = input(MediaCore.color.BLUE+':: Replace with Orignal? (y/N) : '+MediaCore.color.ENDC)
+        if self.replaceOrignal == 'y' or self.replaceOrignal == 'Y':
+            MediaCore.os.system('mv \'{}\' \'{}\''.format(self.outputFileName,MediaCore.Renamer(self.name).bashName))
+            self.outputFileName = self.name
+        print(MediaCore.color.GREEN+'Output File: '+self.outputFileName+MediaCore.color.ENDC)
 
 class RecordingCore():
     pass
