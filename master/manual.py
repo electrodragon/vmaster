@@ -8,6 +8,8 @@ class manual_msg():
         self.s += "   --ra         | Removes Audio From Video\n"
         self.s += "   --jav        | Joins Audio Video\n"
         self.s += "   --cat        | Concats Audio or Video Tracks\n"
+        self.s += "   --cut        | Cuts Video at Provided Durations\n"
+        self.s += "   --rec        | Records Video While Streaming\n"
         self.s += "\n:: Examples: \n"
         self.s += "   $ vmaster --ea \'videofile.mp4\'\n"
         self.s += "   $ vmaster --jav \'videofile.mp4\' \'audioFile.aac\'\n"
