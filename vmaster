@@ -1,1 +1,31 @@
 #!/usr/bin/python
+import os, sys
+from master.manual import manual_msg
+from master.colours import Terminal_color as color
+from master.name_manager import Renamer
+from master.core import MediaCore, CatCore
+
+args = sys.argv[1:]
+
+if '--help' in args or len(args) == 0:
+    sys.exit(manual_msg())
+elif args[0] == '--ea' or args[0] == '--ra':
+    if len(args) >= 2:
+        if os.path.exists(args[1]):
+            MediaCore(args[1]).extractAudio() if '--ea' == args[0] else MediaCore(args[1]).removeAudio()
+        else:
+            sys.exit(color.WARNING+'\n:: File Doesn\'t Exist !\n'+color.ENDC)
+    else:
+        sys.exit(color.FAIL+'\n:: No Input File Given !\n'+color.ENDC)
+elif args[0] == '--jav' or args[0] == '--cat':
+    nameArgs = args[1:]
+    if len(nameArgs) == 0:
+        sys.exit(color.FAIL+'\n:: No Input File Given !\n'+color.ENDC)
+    elif len(nameArgs) < 2:
+        sys.exit(color.WARNING+'\n:: Please Provide Two Files AtLeast !\n'+color.ENDC)
+    for arg in nameArgs:
+        if not os.path.exists(arg):
+            sys.exit(color.WARNING+'\n:: File Doesn\'t Exist !\n'+color.ENDC)
+    CatCore(nameArgs).joinAV() if args[0] == '--jav' else CatCore(nameArgs).cat()
+else:
+    sys.exit(manual_msg())
