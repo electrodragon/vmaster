@@ -67,10 +67,12 @@ class RecordingCore():
     def record(self):
         import random, datetime
         self.date = str(datetime.datetime.utcnow().strftime("%a-%b-%d--%H-%M-%S--%Y-"+str(random.randint(50001,60001))))
-        self.quality = input('\n :: Enter Quality ([best], worst): ')
+        self.quality = input('\n :: Enter Quality ([best], worst, 144, 240, 360): ')
         if self.quality == '':
             print(MediaCore.color.BLUE+" :: No Quality Given, using default [best] !"+MediaCore.color.ENDC)
             self.quality = 'best'
+        elif self.quality != 'worst':
+            self.quality = '\'bestvideo[height<=?{}]+bestaudio/best\''.format(self.quality)
         self.seek = input('\n :: Start Seek at (00:00:00) : ')
         if self.seek == '':
             print(MediaCore.color.BLUE+" :: No Seek Given, Recording Will Start at 0"+MediaCore.color.ENDC)
@@ -86,8 +88,8 @@ class RecordingCore():
         self.cmd = 'mpv --ytdl-format='+self.quality+' \''+self.url+'\''
         self.cmd += ' --no-border --record-file=\''+self.filename+'\''
         self.cmd += self.seek
-        self.proceed = input(MediaCore.color.HEADER+"\n :: Proceed (y/N) "+MediaCore.color.ENDC)
-        if self.proceed == 'y' or self.proceed == 'Y':
+        self.proceed = input(MediaCore.color.HEADER+"\n :: Proceed (Y/n) "+MediaCore.color.ENDC)
+        if self.proceed != 'n' or self.proceed != 'N':
             print()
             MediaCore.os.system(self.cmd)
         else:
