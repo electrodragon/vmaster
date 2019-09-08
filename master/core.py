@@ -89,7 +89,7 @@ class RecordingCore():
         self.cmd += ' --no-border --record-file=\''+self.filename+'\''
         self.cmd += self.seek
         self.proceed = input(MediaCore.color.HEADER+"\n :: Proceed (Y/n) "+MediaCore.color.ENDC)
-        if self.proceed != 'n' or self.proceed != 'N':
+        if self.proceed.lower() == 'y' or self.proceed == '':
             print()
             MediaCore.os.system(self.cmd)
         else:
